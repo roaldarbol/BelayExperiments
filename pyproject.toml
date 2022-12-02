@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "experiments"
+version = "0.1.0"
+description = ""
+authors = ["Mikkel Roald-Arbøl <github.ggb9a@simplelogin.co>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+belay = "^0.15"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

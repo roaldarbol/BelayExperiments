@@ -1,0 +1,113 @@
+import belay
+from serial.tools import list_ports
+import time
+import inspect
+import multiprocessing as mp
+
+# working_serial = []
+# for port in list(list_ports.comports()):
+#     working_serial.append(port.device)
+# print(working_serial)
+
+device = belay.Device('/dev/cu.SLAB_USBtoUART', 115200)
+device("from neopixel import NeoPixel; np = NeoPixel(Pin(2), 12, bpp=4)")
+state = False
+
+@device.task
+def neopixel_toggle(state, colour = (0,0,0,255)):
+    np = NeoPixel(Pin(2), 12, bpp=4)
+
+    dark = (0,0,0,0)
+
+    if state is False:
+        np.fill(colour)
+    elif state is True:
+        np.fill(dark)
+    np.write()
+    state = not state
+    return(state)
+
+@device.task
+def neopixel_fade(state, duration, colour = (0,0,0,255), n_leds = 12):
+    init_state = state
+
+    dark = (0,0,0,0)
+    duration *= 1000
+    n_steps = 256
+    step_duration_short = round(duration / (n_steps * n_leds))
+    step_duration_long = round(duration / n_steps)
+
+    # Maybe find the element with the highest value, do some division to figure out how much to increase by and over how long
+    i = 0
+    j = 0
+    while i < n_steps:
+        t_0 = time.ticks_ms()
+        while j < n_leds:
+            t_1 = time.ticks_ms()
+            if state is False:
+                np[j] = (0,0,0,i)
+            elif state is True:
+                np[j] = (0,0,0,255-i)
+            np.write()
+            j += 1
+            while time.ticks_ms() - t_1 < step_duration_short:
+                pass
+        j = 0
+        i += 1
+        while time.ticks_ms() - t_0 < step_duration_long:
+            pass
+    state = not state
+    return(state)
+
+
+# state = neopixel_toggle(state)
+
+# while t_1 - t_0 < 5:
+#     t_1 = time.time()
+#     pass
+half_hour = 30 * 60
+t_0 = time.time()
+state = neopixel_fade(state, 10)
+state = neopixel_fade(state, 10)
+t_2 = time.time()
+print(t_2 - t_0)
+device.close()
+
+
+# light_times = []
+
+# @device.task
+# def send_number(event, num):
+#     from neopixel import NeoPixel
+#     led = Pin(25, Pin.OUT)
+#     while True:
+#         times = []
+#         t_0 = time.ticks_ms()
+#         while len(times) <= 10:
+
+#             # Do important stuff
+#             led.toggle()
+#             t_1 = time.ticks_ms()
+#             t_diff_1 = t_1 - t_0
+
+#             # Add to our eventual output list
+#             times += [t_diff_1]
+
+#             # "Better sleep"
+#             t_diff_2 = 0
+#             while t_diff_2 < 1000:
+#                 t_diff_2 = time.ticks_ms() - t_1
+            
+#         yield(times)
+#         led.off()
+#         break
+
+# if __name__ == '__main__':
+#     t_0 = time.time()
+#     t_1 = time.time()
+#     event = mp.Event()
+#     while t_1 - t_0 < 10:
+#         for i in led_loop():
+#             device.send()
+#             light_times.append(x)
+#             t_1 = time.time()
