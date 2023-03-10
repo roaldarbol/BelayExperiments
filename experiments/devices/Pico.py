@@ -118,13 +118,13 @@ class Pico(Device):
                 delta2 = flo2.get_motion()
                 # if abs(delta[0]) > 2: 
                 if delta1 is not None: 
-                    x = delta1[1]
-                    y = delta1[0]
-                    z = delta2[1]
+                    x = -(delta1[1] / 34) # Distance in cm
+                    y = ((delta1[0]+delta2[0])/ 2) / 15 # Get to degrees
+                    z = delta2[1] / 341 # Distance in cm
                     tx += x
                     ty += y
                     tz += z
-                print("Relative, rel: x {}, y {}, z {}".format(tx, ty, tz))
+                print("Distance: {} mm, rotation: {} deg".format(int(tx), int(ty)))
                 if delay != 0:
                     time.sleep(delay)
         except:
