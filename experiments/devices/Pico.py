@@ -3,11 +3,12 @@ from belay import Device, list_devices
 import time
 import sys
 from datetime import datetime as dt
-import cursor
-import csv
 
 class Pico(Device):
-    @Device.setup
+
+    @Device.setup(
+        autoinit=True
+    )
     def import_libs():
         import machine
         from machine import Pin
@@ -18,30 +19,35 @@ class Pico(Device):
         from breakout_paa5100 import BreakoutPAA5100 as FlowSensor
         led = Pin(25, Pin.OUT)
 
-    @Device.setup
-    def setup_PAA5100(double=False):
-        BG_SPI_FRONT = 0
-        BG_SPI_BACK = 1
-        flo1 = FlowSensor(
-            slot=BG_SPI_FRONT
-        ) # Front
-        if double == True:
-            flo2 = FlowSensor(
-                slot=BG_SPI_BACK
-            ) # Back
+    @Device.setup(
+        autoinit=False
+    )
+    def setup_PAA5100(multi=False):
+
         rotation = FlowSensor.DEGREES_0
         SIZE = FlowSensor.FRAME_SIZE
         BYTES = FlowSensor.FRAME_BYTES
         data = bytearray(BYTES)
 
-        flo1.set_rotation(rotation)
+        BG_SPI_FRONT = 0
+        BG_SPI_BACK = 1
+        flo = FlowSensor(
+            slot=BG_SPI_FRONT
+        ) # Front
+        flo.set_rotation(rotation)
+        if multi is True:
+            flo2 = FlowSensor(
+                slot=BG_SPI_FRONT
+            ) # Front
+            flo2.set_rotation(rotation)
 
         offset = 0
         value = 0
-
         x = 0
         y = 0
         z = 0
+        tx = 0
+        ty = 0
 
 
     def value_to_char(value):
@@ -73,6 +79,7 @@ class Pico(Device):
     @Device.task
     def led_toggle():
         led.toggle()
+        yield "Switched"
 
     @Device.task
     def record_light():
@@ -88,47 +95,36 @@ class Pico(Device):
     def record_environment():
         return list(bme.read())
 
-    @Device.task
-    def record_flow(delay=0):
-        tx = 0
-        ty = 0
-        try:
-            while True:
-                delta = flo1.get_motion()
-                # if abs(delta[0]) > 2: 
-                if delta is not None: 
-                    x = delta[0]
-                    y = delta[1]
-                    tx += x
-                    ty += y
-                print("Relative, rel: x {}, y {}".format(tx, ty))
-                if delay != 0:
-                    time.sleep(delay)
-        except:
-            pass
+    # @Device.task
+    # def record_flow(delay=0):
+    #     global tx, ty
+    #     while True:
+    #         yield tx, ty
+    #         delta = flo1.get_motion()
+    #         if delta is not None: 
+    #             x = delta[0]
+    #             y = delta[1]
+    #             tx += x
+    #             ty += y
+            
+    #         if delay != 0:
+    #             time.sleep(delay)
 
     @Device.task
-    def record_flow_double(delay=0):
-        tx = 0
-        ty = 0
-        tz = 0
-        try:
-            while True:
-                delta1 = flo1.get_motion()
-                # delta2 = flo2.get_motion()
-                # if abs(delta[0]) > 2: 
-                if abs(delta1[0]) > 1: 
-                    x = -delta1[1] / 34.1 # Distance in cm
-                    y = delta1[0] / 14.8 # Get to degrees
-                    # z = delta2[1] / 341 # Distance in cm
-                    tx += x
-                    ty += y
-                    # tz += z
-                print("Distance: {} mm | Rotation: {} deg".format(int(tx), int(ty)))
-                if delay != 0:
-                    time.sleep(delay)
-        except:
-            pass
+    def record_flow(delay=0):
+        global tx, ty
+        while True:
+            yield tx, ty
+            try:
+                x, y = flo.get_motion()
+            except RuntimeError:
+                continue
+            x = -x / 34.1 # Distance in cm
+            y = y / 14.8 # Get to degrees
+            tx += x
+            ty += y
+            if delay != 0:
+                time.sleep(delay)
 
     @Device.task
     def capture_frame():
