@@ -8,6 +8,7 @@ platforms = ["osx-64"]
 
 [tasks]
 exp-1 = "python breathe_1.py"
+bonn-test = "python experiments/test.py"
 
 [dependencies]
 python = ">=3.12.1,<3.13"
