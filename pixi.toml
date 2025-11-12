@@ -1,0 +1,14 @@
+[workspace]
+name = "BelayExperiments"
+version = "0.1.0"
+description = "Add a short description here"
+authors = ["Mikkel Roald-Arbøl <github.ggb9a@simplelogin.co>"]
+channels = ["conda-forge"]
+platforms = ["osx-64"]
+
+[tasks]
+exp-1 = "python breathe_1.py"
+
+[dependencies]
+python = ">=3.12.1,<3.13"
+belay = ">=0.28.0,<0.29"
