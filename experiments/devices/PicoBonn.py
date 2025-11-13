@@ -1,6 +1,4 @@
-
-from belay import Device, list_devices
-import time
+from belay import Device
 
 class PicoBonn(Device):
     @Device.setup(
@@ -26,6 +24,7 @@ class PicoBonn(Device):
         bh1745 = BreakoutBH1745(I2C)
         bme688 = BreakoutBME68X(I2C)
         bh1745.leds(True)
+        led.value(True)
 
     @Device.task
     def set_led(state):
@@ -63,22 +62,25 @@ class PicoBonn(Device):
         print("Pressure: {}".format(pressure))
         print("Humidity: {}".format(humidity))
 
-if __name__ == "__main__":
-    picoB = PicoBonn(list_devices()[-1])
-    picoB.setup()
-    vals = [1]
-    t_interval = 5
+# if __name__ == "__main__":
+#     from belay import Device, list_devices
+#     import time
+
+#     picoB = PicoBonn(list_devices()[-1])
+#     picoB.setup()
+#     vals = [1]
+#     t_interval = 5
     
-    try:
-        picoB.led_toggle()
-        t0 = time.time()
-        t1 = time.time()
-        while t1 - t0 < t_interval:
-            t1 = time.time()
-        picoB.led_toggle()
-        picoB.record_light()
+#     try:
+#         picoB.led_toggle()
+#         t0 = time.time()
+#         t1 = time.time()
+#         while t1 - t0 < t_interval:
+#             t1 = time.time()
+#         picoB.led_toggle()
+#         picoB.record_light()
         
-    except:
-        print("here", vals)
-        picoB.led_off()
-        picoB.close()
+#     except:
+#         print("here", vals)
+#         picoB.led_off()
+#         picoB.close()

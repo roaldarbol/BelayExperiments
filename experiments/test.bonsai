@@ -7,10 +7,18 @@
     <Nodes>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="py:CreateRuntime">
-          <py:ScriptPath>test.py</py:ScriptPath>
+          <py:PythonHome>C:\Users\mroald-arboel\Documents\Projects\BelayExperiments\.venv</py:PythonHome>
+          <py:ScriptPath>start.py</py:ScriptPath>
+        </Combinator>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="py:Exec">
+          <py:Script>run_experiment()</py:Script>
         </Combinator>
       </Expression>
     </Nodes>
-    <Edges />
+    <Edges>
+      <Edge From="0" To="1" Label="Source1" />
+    </Edges>
   </Workflow>
 </WorkflowBuilder>
