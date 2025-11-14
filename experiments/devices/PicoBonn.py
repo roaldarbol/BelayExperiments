@@ -1,6 +1,11 @@
 from belay import Device
 
 class PicoBonn(Device):
+    def __init__(self, *args, **kwargs):
+        # Initialize host-side variables before calling parent __init__
+        self._temperature = None
+        super().__init__(*args, **kwargs)
+
     @Device.setup(
         autoinit=True
     )
@@ -25,6 +30,11 @@ class PicoBonn(Device):
         bme688 = BreakoutBME68X(I2C)
         bh1745.leds(True)
         led.value(True)
+
+    @Device.teardown
+    def teardown():
+        bh1745.leds(False)
+        led.value(False)
 
     @Device.task
     def set_led(state):
@@ -61,6 +71,17 @@ class PicoBonn(Device):
         print("Temp: {}".format(temperature))
         print("Pressure: {}".format(pressure))
         print("Humidity: {}".format(humidity))
+        return temperature
+
+    def measure_temperature(self):
+        # Runs on your computer - this is a regular method
+        self._temperature = self.read_environment()
+        return self._temperature
+
+    @property
+    def latest_temperature(self):
+        # Now you can just return the cached value
+        return self._temperature
 
 # if __name__ == "__main__":
 #     from belay import Device, list_devices

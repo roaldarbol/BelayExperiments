@@ -4,16 +4,24 @@
 # if project_dir not in sys.path:
 #     sys.path.insert(0, project_dir)
 
+# import atexit
 import time
-from belay import Device, list_devices
+from belay import list_devices
 from devices.PicoBonn import PicoBonn
 
-address = list_devices()[-1]
-print(address)
-picoB = PicoBonn("COM3")
-print("Here 1")
-picoB.read_light()
-print("here 2")
-time.sleep(5)
-picoB.read_environment()
-picoB.close()
+# Initialize device globally
+device_port = list_devices()[-1]
+t1 = time.time()
+with PicoBonn(device_port) as picoB:
+    t2 = time.time()
+    print()
+    print("Connected! Connection took {:.2f}s".format(t2 - t1))
+    time.sleep(1)
+    print(picoB.latest_temperature)
+    time.sleep(1)
+    picoB.measure_temperature()
+    print("Reading...")
+    time.sleep(1)
+    print(picoB.latest_temperature)
+    time.sleep(1)
+    print(picoB.latest_temperature)
