@@ -1,10 +1,10 @@
 from belay import Device
 
 class PicoBonn(Device):
-    def __init__(self, *args, **kwargs):
-        # Initialize host-side variables before calling parent __init__
+    def __post_autoinit__(self, *args, **kwargs):
         self._temperature = None
-        super().__init__(*args, **kwargs)
+
+    # ---- Setup and teardown of device ----- #
 
     @Device.setup(
         autoinit=True
@@ -36,6 +36,8 @@ class PicoBonn(Device):
         bh1745.leds(False)
         led.value(False)
 
+    # ----- Device methods ----- #
+
     @Device.task
     def set_led(state):
         print(f"Printing from device; turning LED to {state}.")
@@ -44,8 +46,6 @@ class PicoBonn(Device):
     @Device.task
     def led_toggle():
         led.toggle()
-        # data = {'a': [random.random()], 'b': [random.random()]}
-        # return(data)
 
     @Device.task
     def led_off():
@@ -73,6 +73,8 @@ class PicoBonn(Device):
         print("Humidity: {}".format(humidity))
         return temperature
 
+    # ----- Local wrappers ----- #
+
     def measure_temperature(self):
         # Runs on your computer - this is a regular method
         self._temperature = self.read_environment()
@@ -82,26 +84,3 @@ class PicoBonn(Device):
     def latest_temperature(self):
         # Now you can just return the cached value
         return self._temperature
-
-# if __name__ == "__main__":
-#     from belay import Device, list_devices
-#     import time
-
-#     picoB = PicoBonn(list_devices()[-1])
-#     picoB.setup()
-#     vals = [1]
-#     t_interval = 5
-    
-#     try:
-#         picoB.led_toggle()
-#         t0 = time.time()
-#         t1 = time.time()
-#         while t1 - t0 < t_interval:
-#             t1 = time.time()
-#         picoB.led_toggle()
-#         picoB.record_light()
-        
-#     except:
-#         print("here", vals)
-#         picoB.led_off()
-#         picoB.close()
