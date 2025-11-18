@@ -12,7 +12,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="py:CreateRuntime">
           <py:PythonHome>C:\Users\mroald-arboel\Documents\Projects\BelayExperiments\.venv</py:PythonHome>
-          <py:ScriptPath>runtime.py</py:ScriptPath>
+          <py:ScriptPath />
         </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">

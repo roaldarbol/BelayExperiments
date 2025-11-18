@@ -1,3 +1,9 @@
+import sys
+import os
+project_dir = os.getcwd()
+if project_dir not in sys.path:
+    sys.path.insert(0, project_dir)
+
 import time
 import belay
 from belay import list_devices

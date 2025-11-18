@@ -1,8 +1,11 @@
 from belay import Device
+import atexit
 
 class PicoBonn(Device):
-    def __post_autoinit__(self, *args, **kwargs):
+    def __post_init__(self, *args, **kwargs):
         self._temperature = None
+        # atexit.register(self.close())
+        
 
     # ---- Setup and teardown of device ----- #
 
