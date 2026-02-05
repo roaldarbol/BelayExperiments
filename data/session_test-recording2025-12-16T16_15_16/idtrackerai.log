@@ -1,0 +1,171 @@
+11:33:59 Welcome to idtracker.ai 6.0.12                                                                   logging_utils.py:184
+         Date: 2026-01-13 11:33:59                                                                        logging_utils.py:188
+         Running Python '3.13.11' in 'Windows-11-10.0.26200-SP0'                                                              
+         Writing log in C:\Windows\System32\idtrackerai.log                                               logging_utils.py:193
+         Using NumPy 2.3.5                                                                                logging_utils.py:196
+         Using headless OpenCV 4.11.0.86                                                                  logging_utils.py:199
+         Regular OpenCV not found                                                                         logging_utils.py:208
+         Using "spawn" multiprocessing start method                                                       logging_utils.py:210
+         No parameter files detected                                                                            __main__.py:44
+         No terminal arguments detected                                                                         __main__.py:52
+         Initializing SegmentationGUI with PyQt6 6.10.1                                                    GUI_main_base.py:51
+         Saving GUI settings in \HKEY_CURRENT_USER\Software\idtrackerai\idtrackerai_GUI                    GUI_main_base.py:62
+         WARNING A new patch release of idtracker.ai is available: 6.0.12 -> 6.0.13                           telemetry.py:110
+         To update, run: "python -m pip install --upgrade idtrackerai"                                                        
+11:34:28 Generating frame stack for background subtraction with 50 samples                                 segmentation.py:254
+         Computing background (50 iterations). It took 0:00:00                                             segmentation.py:282
+         Computing background from a stack of 50 frames using 'median'                                     segmentation.py:316
+11:34:43 GUI params:                                                                                               main.py:269
+                         video_paths=['C:\\Users\\Admin\\Projects\\BelayExperiments\\data\\test-recording2025-12-1            
+         6T16_15_16.avi']                                                                                                     
+                       intensity_ths=[19, 255]                                                                                
+                            area_ths=[50.0, inf]                                                                              
+                  tracking_intervals=None                                                                                     
+                   number_of_animals=1                                                                                        
+                             use_bkg=True                                                                                     
+                  check_segmentation=False                                                                                    
+                 track_wo_identities=True                                                                                     
+                            roi_list=None                                                                                     
+         background_subtraction_stat='median'                                                                                 
+11:34:44 Using PyTorch 2.9.1                                                                                      device.py:15
+         WARNING No graphic device was found available, running neural networks on CPU. This may slow down the    device.py:38
+         training steps.                                                                                                      
+11:34:48 START Tracking session                                                                                      run.py:26
+         Initializing Session                                                                                   session.py:162
+         Setting video paths to:                                                                                session.py:174
+             C:\Users\Admin\Projects\BelayExperiments\data\test-recording2025-12-16T16_15_16.avi                              
+         The session has 1385 frames (3 episodes)                                                               session.py:228
+                 Episode 0, frames (0 -> 461) of /test-recording2025-12-16T16_15_16.avi                         session.py:235
+                 Episode 1, frames (461 -> 923) of /test-recording2025-12-16T16_15_16.avi                       session.py:235
+                 Episode 2, frames (923 -> 1385) of /test-recording2025-12-16T16_15_16.avi                      session.py:235
+         No session name provided, assigning name "test-recording2025-12-16T16_15_16"                           session.py:247
+         Directory C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16 has  session.py:267
+         been created                                                                                                         
+         Directory                                                                                              session.py:268
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\preprocessing                
+         has been created                                                                                                     
+         Number of parallel jobs: 4                                                                             session.py:290
+         Background from Segmentation App moved to                                                              session.py:305
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\preprocessing\               
+         background.png                                                                                                       
+         Saving Session object in                                                                                   run.py:112
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\session.json                 
+         START Animal detection                                                                                py_utils.py:197
+         Directory                                                                                     animals_detection.py:17
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\bound                        
+         ing_box_images has been created                                                                                      
+         Using previously computed background model from GUI                                           animals_detection.py:31
+         Segmenting video, 3 episodes in 4 parallel jobs                                                   segmentation.py:205
+         Saving bounding box images in                                                                     segmentation.py:208
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\bounding_                    
+         box_images                                                                                                           
+         Segmenting video (3 iterations). It took 0:00:00                                                  segmentation.py:234
+         Generating ListOfBlobs object                                                                     list_of_blobs.py:48
+         1385 detected blobs in total, an average of 1.0 blobs per frame                               animals_detection.py:64
+         There are 0 frames with more blobs than animals                                              animals_detection.py:110
+         FINISH Animal detection, it took 0:00:00                                                              py_utils.py:202
+         Saving Session object in                                                                                   run.py:112
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\session.json                 
+         Saving ListOfBlobs at                                                                                      run.py:114
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\preprocessing\list           
+         _of_blobs.pickle                                                                                                     
+         Writing list_of_blobs.pickle (996.2 kB). It took 0:00:00                                         list_of_blobs.py:100
+         START Crossing detection                                                                              py_utils.py:197
+         Computing body lengths (1385 iterations). It took 0:00:00                                            model_area.py:75
+         The median body length is 67.5 pixels                                                                model_area.py:89
+         The automatic identification image size is 48                                                          session.py:506
+         No resolution reduction required                                                                       session.py:519
+         Identification image size set to [48, 48, 1], resolution reduction factor set to 1                     session.py:554
+         Directory                                                                                              __init__.py:27
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\identification               
+         _images has been created                                                                                             
+11:34:49 Setting images for identification (3 iterations). It took 0:00:00                                list_of_blobs.py:226
+         Connecting blobs (1385 iterations). It took 0:00:00                                              list_of_blobs.py:161
+         FINISH Crossing detection, it took 0:00:00                                                            py_utils.py:202
+         Saving Session object in                                                                                   run.py:112
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\session.json                 
+         Saving ListOfBlobs at                                                                                      run.py:114
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\preprocessing\list           
+         _of_blobs.pickle                                                                                                     
+         Writing list_of_blobs.pickle (1.0 MB). It took 0:00:00                                           list_of_blobs.py:100
+         START Fragmentation                                                                                   py_utils.py:197
+         Fragmenting blobs (1385 iterations). It took 0:00:00                                              fragmentation.py:59
+         Creating list of fragments                                                                   list_of_fragments.py:192
+         Connecting coexisting fragments (1 iterations). It took 0:00:00                              list_of_fragments.py:455
+         1 Fragments in total, 1 individuals and 0 crossings                                               fragmentation.py:30
+         Total number of Global Fragments: 1                                                    list_of_global_fragments.py:78
+         Of which 1 are long enough to be accumulated                                           list_of_global_fragments.py:82
+         FINISH Fragmentation, it took 0:00:00                                                                 py_utils.py:202
+         Saving Session object in                                                                                   run.py:112
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\session.json                 
+         Saving ListOfBlobs at                                                                                      run.py:114
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\preprocessing\list           
+         _of_blobs.pickle                                                                                                     
+         Writing list_of_blobs.pickle (1.0 MB). It took 0:00:00                                           list_of_blobs.py:100
+         Saving ListOfFragments as                                                                                  run.py:116
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\preprocessing\list           
+         _of_fragments.json                                                                                                   
+         Writing list_of_fragments.json (15.8 kB). It took 0:00:00                                    list_of_fragments.py:243
+         Saving ListOfGlobalFragments at                                                                            run.py:118
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\preprocessing\list           
+         _of_global_fragments.json                                                                                            
+         START Tracking                                                                                        py_utils.py:197
+         Tracking without identities                                                                            __init__.py:64
+         Assigning random identities (1386 iterations). It took 0:00:00                                        __init__.py:100
+         FINISH Tracking, it took 0:00:00                                                                      py_utils.py:202
+         Saving Session object in                                                                                   run.py:112
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\session.json                 
+         Saving ListOfBlobs at                                                                                      run.py:114
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\preprocessing\list           
+         _of_blobs.pickle                                                                                                     
+         Writing list_of_blobs.pickle (1.0 MB). It took 0:00:00                                           list_of_blobs.py:100
+         Saving ListOfFragments as                                                                                  run.py:116
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\preprocessing\list           
+         _of_fragments.json                                                                                                   
+         Writing list_of_fragments.json (15.8 kB). It took 0:00:00                                    list_of_fragments.py:243
+         Saving ListOfGlobalFragments at                                                                            run.py:118
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\preprocessing\list           
+         _of_global_fragments.json                                                                                            
+         START Trajectories creation                                                                           py_utils.py:197
+         Directory                                                                                 trajectories_creation.py:80
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\t                            
+         rajectories has been created                                                                                         
+         Producing trajectories (1385 iterations). It took 0:00:00                                trajectories_creation.py:129
+         Saving trajectories in                                                                          trajectories_io.py:87
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\traject                      
+         ories\trajectories.h5                                                                                                
+         Creating converter from 5 to 3                                                                           attrs.py:204
+         Saving trajectories in                                                                          trajectories_io.py:40
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\traject                      
+         ories\trajectories.npy                                                                                               
+         Saving trajectories in                                                                          trajectories_io.py:53
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\traject                      
+         ories\trajectories_csv                                                                                               
+         Directory                                                                                       trajectories_io.py:54
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\traject                      
+         ories\trajectories_csv has been created                                                                              
+         FINISH Trajectories creation, it took 0:00:00                                                         py_utils.py:202
+         FINISH Tracking session, it took 0:00:01                                                                    run.py:67
+         Saving Session object in                                                                                   run.py:112
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\session.json                 
+         Saving ListOfBlobs at                                                                                      run.py:114
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\preprocessing\list           
+         _of_blobs.pickle                                                                                                     
+         Writing list_of_blobs.pickle (1.0 MB). It took 0:00:00                                           list_of_blobs.py:100
+         Saving ListOfFragments as                                                                                  run.py:116
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\preprocessing\list           
+         _of_fragments.json                                                                                                   
+         Writing list_of_fragments.json (15.8 kB). It took 0:00:00                                    list_of_fragments.py:243
+         Saving ListOfGlobalFragments at                                                                            run.py:118
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\preprocessing\list           
+         _of_global_fragments.json                                                                                            
+         Tracked without identities, no estimated accuracy available.                                                run.py:71
+         Data policy: 'idmatcher.ai'                                                                            session.py:966
+         Directory                                                                                              session.py:985
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\bounding_box_i               
+         mages has been removed                                                                                               
+         Directory                                                                                              session.py:986
+         C:\Users\Admin\Projects\BelayExperiments\data\session_test-recording2025-12-16T16_15_16\crossings_dete               
+         ctor not found, can't remove                                                                                         
+         Compressing identification images (3 iterations). It took 0:00:00                                     session.py:1002
+         Success                                                                                                     run.py:81

@@ -1,0 +1,20 @@
+{
+    "version": "6.0.12",
+    "height": 382,
+    "width": 376,
+    "video_paths": [
+        "C:\\Users\\Admin\\Projects\\BelayExperiments\\data\\test-recording2025-12-16T16_15_16.avi"
+    ],
+    "frames_per_second": 30.0,
+    "body_length": 67.47592163134935,
+    "estimated_accuracy": 1.0,
+    "setup_points": {},
+    "identities_labels": [
+        "1"
+    ],
+    "identities_groups": {},
+    "length_unit": null,
+    "silhouette_score": null,
+    "fragment_connectivity": null,
+    "fraction_identified": 1.0
+}
