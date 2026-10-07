@@ -1,42 +1,44 @@
 from belay import Device
-import atexit
 
 class PicoBonn(Device):
-    def __post_init__(self, *args, **kwargs):
-        self._temperature = None
-        # atexit.register(self.close())
-        
 
     # ---- Setup and teardown of device ----- #
 
-    @Device.setup(
-        autoinit=True
-    )
+    @Device.setup(autoinit=True)
     def setup():
         import machine
         from machine import Pin
         import time
         import random
         from pimoroni_i2c import PimoroniI2C
-        from breakout_bme68x import BreakoutBME68X
         from breakout_bh1745 import BreakoutBH1745
+        from breakout_bme68x import BreakoutBME68X
+        from breakout_ioexpander import BreakoutIOExpander
 
         # Init on-board stuff
         led = Pin('LED', Pin.OUT)
         temp_sensor = machine.ADC(4)
         conv = 3.3 / 65535  # Conversion factor
 
-        # Breakout setup
+        # I2C bus setup
         PINS_BREAKOUT_GARDEN = {"sda": 4, "scl": 5}
         I2C = PimoroniI2C(**PINS_BREAKOUT_GARDEN)
+        led.value(True)   
+
         bh1745 = BreakoutBH1745(I2C)
-        bme688 = BreakoutBME68X(I2C)
         bh1745.leds(True)
-        led.value(True)
+        bme688 = BreakoutBME68X(I2C)
+        ioe = BreakoutIOExpander(I2C)
+        IR_PIN = 1
+        ioe.set_mode(IR_PIN, ioe.PIN_OUT)
+        ioe.output(IR_PIN, 0)
 
     @Device.teardown
     def teardown():
-        bh1745.leds(False)
+        if 'bh1745' in dir():
+            bh1745.leds(False)
+        if 'ioe' in dir():
+            ioe.output(IR_PIN, 0)
         led.value(False)
 
     # ----- Device methods ----- #
@@ -59,6 +61,15 @@ class PicoBonn(Device):
         bh1745.leds(state)
 
     @Device.task
+    def ir_led(state):
+        ioe.output(IR_PIN, state)
+
+    @Device.task
+    def ir_led_toggle():
+        current = ioe.input(IR_PIN)
+        ioe.output(IR_PIN, not current)
+
+    @Device.task
     def read_light():
         rgbc_raw = bh1745.rgbc_raw()
         rgb_clamped = bh1745.rgbc_clamped()
@@ -71,19 +82,25 @@ class PicoBonn(Device):
     @Device.task
     def read_environment():
         temperature, pressure, humidity, gas_resistance, status, gas_index, meas_index = bme688.read()
-        print("Temp: {}".format(temperature))
-        print("Pressure: {}".format(pressure))
-        print("Humidity: {}".format(humidity))
+        # print("Temp: {}".format(temperature))
+        # print("Pressure: {}".format(pressure))
+        # print("Humidity: {}".format(humidity))
         return temperature
 
     # ----- Local wrappers ----- #
 
     def measure_temperature(self):
-        # Runs on your computer - this is a regular method
         self._temperature = self.read_environment()
         return self._temperature
 
     @property
     def latest_temperature(self):
-        # Now you can just return the cached value
         return self._temperature
+    
+    @Device.task
+    def i2c_scan():
+        devices = I2C.scan()
+        print(f"Found {len(devices)} device(s):")
+        for addr in devices:
+            print(f"  0x{addr:02x} ({addr})")
+        return devices
