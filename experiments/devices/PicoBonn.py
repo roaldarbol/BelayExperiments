@@ -1,3 +1,4 @@
+import belay
 from belay import Device
 
 class PicoBonn(Device):

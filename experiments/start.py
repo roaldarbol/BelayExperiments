@@ -10,7 +10,7 @@ from devices.PicoBonn import PicoBonn
 
 address = list_devices()[-1]
 print(address)
-picoB = PicoBonn("COM3")
+picoB = PicoBonn(address)
 print("Here 1")
 picoB.read_light()
 print("here 2")
